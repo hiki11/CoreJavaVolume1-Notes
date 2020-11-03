@@ -149,3 +149,6 @@ switch (choice) {
 
 6、终端控制流程语句：标签break。用`xxx:`标记，然后就可以break xxx跳出，可以用于跳出多层循环。同样有标记continue。
 
+### 3.9大数值
+
+java.math的两个类：BigInteger和BigDecimal，可以处理任何长度数字序列的数值。BigInteger类实现了人已经堵的整数运算，BigDecimal实现了任意精度的浮点数运算。使用valueOf可以将普通数值转换为大数值。不能使用算术运算符处理大数值，而是用add和multiply方法，除此之外还有不少其他的API。
