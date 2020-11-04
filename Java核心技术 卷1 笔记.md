@@ -152,3 +152,23 @@ switch (choice) {
 ### 3.9大数值
 
 java.math的两个类：BigInteger和BigDecimal，可以处理任何长度数字序列的数值。BigInteger类实现了人已经堵的整数运算，BigDecimal实现了任意精度的浮点数运算。使用valueOf可以将普通数值转换为大数值。不能使用算术运算符处理大数值，而是用add和multiply方法，除此之外还有不少其他的API。
+
+### 3.10数组
+
+创建一个数组，数字数组会初始化为0，boolean初始化为false，对象数组初始化null。
+
+1、foreach循环：foreach的collection必须是数组或者是实现了Iterator接口的类对象（例如ArrayList）。
+
+打印数组：Arrays.toString();
+
+2、数组初始化以及匿名数组
+
+匿名数组初始化：`new int[] {17, 18, 23 ,29, 31 ,37}`，数组的大小就是初始值的个数。使用这种方法可以再不创建新变量的情况下重新初始化一个数组。
+
+数组长度可以为0，但数组并不是null。
+
+3、数组拷贝：`Arrays.copyOf(arr, length);`
+
+4、命令行参数：main的String[] args，通过`java Message -g cruel world`运行程序时（程序名为Message），args[0]为-g，arg[1]为cruel，arg[2]为world。
+
+5、
