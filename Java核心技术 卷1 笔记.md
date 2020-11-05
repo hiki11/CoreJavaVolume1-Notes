@@ -171,4 +171,18 @@ java.math的两个类：BigInteger和BigDecimal，可以处理任何长度数字
 
 4、命令行参数：main的String[] args，通过`java Message -g cruel world`运行程序时（程序名为Message），args[0]为-g，arg[1]为cruel，arg[2]为world。
 
-5、
+5、数组排序：Arrays.sort()。
+
+​	API：binarySearch(v)【二分法查找值v】；fill(v)【填充数组元素值为v】；equals(type[] a, type[] b)【数组大小相同，下标相同的元素都对应相等，返回true】
+
+6、二维数组：打印二维数组，可以用`Arrays.deepToString();`
+
+7、不规则数组：初始化。
+
+```java
+int[][] adds = new int[NMAX + 1][];
+for (int n = 0; n <= NMAX; n++) {
+	adds[n] = new int[n + 1];
+}
+```
+
