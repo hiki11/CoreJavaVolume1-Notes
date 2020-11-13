@@ -253,3 +253,73 @@ Java中使用构造器（Constructor）构造新实例。构造器的名字应�
 将时间和日历分开是一中很好的面向对象设计。通常，最好使用不同的类表示不同的概念。Date类只提供了少量的方法用来比较两个时间点，例如before和after方法表示是否早于或晚于一个时间点。
 
 使用new GregorianCalendar()构建新对象，还可以通过提供年月日表示日历对象，怪异的事，月份从0开始计数。
+
+2.3、更改器方法与访问器方法：...
+
+3、用户自定义类：学习设计复杂应用所需要的主力类（workhorse class）。通常这些类没有main方法，却又自己的实例域和实例方法。想要创建一个完整的程序，应该将若干类组合在一起，其中只有一个类有main方法。
+
+3.1、Employee类
+
+在Java中，最简单的类定义形式为：
+
+```java
+class ClassName {
+  field1
+  field2
+  ...
+  constructor1
+  constructor2
+  ...
+  method1
+  method2
+  ...
+}
+```
+
+一个简单的Employee类：
+
+```java
+class Employee {
+  // instance fields
+  private String name;
+  private double salary;
+  private Date hireDay;
+  
+  // constructor
+  public Employee(String n, double s, int year, int month, int day) {
+    name = n;
+    salary = s;
+    GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);
+  }
+      
+  // a method
+  public String getName() {
+    return name;
+  }
+
+  // more method
+  ...
+}
+```
+
+3.2、多个源文件的使用：许多程序员习惯于将每一个类存在一个单独的源文件中。编译EmployeeTest.java，其使用了Employee类，那么Java编译器就会自动搜索Employee.java进行编译。并且Employee.java若版本较已有Employee.java版本新，那么Java编译器会自动重新编译这个文件。
+
+3.3、剖析Employee类：方法可以有4中访问级别，实例（name、salary...）是private关键字，确保只有类自身的方法才能访问这些实例域，其他类的方法不能够读写这些域。（并不建议public实例域，这会破坏封装，任何类的任何方法都可以修改public域）
+
+3.4、构造器：构造器与类同名，在构造 类的对象时，构造器会运行，以便将实例域初始化为所希望的状态。构造器与其他的方法有一个重要的不同，构造器总是伴随着new操作符的执行被调用，而不能对一个已经存在的对象调用构造器来达到重新设置实例域的目的，这个将会产生编译错误。
+
+构造器的主要点：①构造器与类同名②每个类可以有一个以上的构造器③构造器可以有0个、1个或多个参数④构造器没有返回值⑤构造器总是伴随着new操作一起调用
+
+警告：不要在构造器中定义与实例域重名的局部变量（这些变量会屏蔽同名的实例域）。
+
+3.5 隐式参数与显式参数：salary称为隐式（implicit）参数，byPercent称为显式（explicit）参数，位于方法名后面括号中的数值，并且有方法声明。
+
+关键字this表示隐式参数，隐式参数没有出现在方法声明中。
+
+```java
+public void raiseSalary(double byPercent) {
+  double raise = this.salary * byPercent / 100;
+  this.salary += raise;
+}
+```
+
