@@ -323,3 +323,99 @@ public void raiseSalary(double byPercent) {
 }
 ```
 
+3.6、封装的优点：Java的特性。访问器方法getXxx，更改器方法setXxx。
+
+在有些时候，需要获得或设置实例域的值。因此，应该提供下面三项内容:
+
+* 一个私有的数据城;
+* 一个公有的城访问器方法
+* 一个公有的域更改器方法。
+
+好处是①可以改变内部实现，除了该类的方法之外，不会影响其他代码。②更改器方法可以执行错误检查，然而直接对域进行赋值将不会进行着些处理。例如，setSalary方法可以检查薪金是否小于0。
+
+警告：不要编写返回引用可变对象的访问器方法。例如getHireDay方法返回了一个Date类对象：
+
+```java
+class Employee {
+  private Date hireDay;
+  ...
+  public Date getHireDay() {
+    return hireDay;
+  }
+  ...
+}
+```
+
+这会破坏封装性！如果需要返回一个可变对象的引用，应该首先对它进行克隆（clone）。即`return hireDay.clone()`。
+
+3.7、基于类的访问权限：一个方法可以访问所属类的所有对象的私有数据。
+
+3.8、私有方法：绝大多数方法都设计为公有的，但在某些特殊情况下，可也能将它们设计为私有的。
+
+3.9、final实例域：大多应用于基本（primitive）类型域，或不可变（immutable）类的域【如String】。如果是可变的类，比如`private final Date hiredate;`只意味着存储在hiredate变量中的对象引用在对象构造之后不能被改变，而并不意味着hiredate对象是一个常量，任何方法都可以对hiredate引用的对象调用setTime更改器。将实例域定义为final，构建对象时必须初始化这样的域。
+
+4.1、静态域：将域定义为static，则每个类中只有一个这样的域。而每个对象对于所有的实例域都有自己的一份拷贝。
+
+```java
+class Employee {
+  private static int nextId = 1;
+  private int id;
+}
+```
+
+每个雇员对象都有一个自己的id域，但这个类的所有实例将共享一个nextId域。也就是说，如果有1000个Employee类的对象，则有1000个实例域id，但只有一个静态域nextId。即使没有一个对象，静态域也存在，它属于类而不是与任何独立对象。
+
+4.2、静态常量：如
+
+```java
+public class Math {
+  public static final double PI = 3.14158...;
+}
+```
+
+在程序中，可以采用Math.PI的形式获得这个常量。如果static被省略，PI就变成了Math类的一个实例域。需要通过Math类的对象访问PI，并且每个Math对象都有自己的一份PI拷贝。
+
+System.out是常用的静态常量（static final）。由于每个类对象都可以对公有域进行修改，所以最好不要将域设计为public，然而公有常量（即final域）可以。因为out被声明为final。所以不允许再讲其他打印流赋给它。
+
+4.3、静态方法：不能向对象实施操作的方法。比如Math类的pow方法就是一个静态方法。在运算时，不使用任何Math对象。也就是没有隐式的参数。可以认为静态方法是没有this参数的方法。
+
+静态方法不能操作对象，所以不能再静态方法中访问实例域。但可以访问自身类中的静态域。
+
+注释：可以使用对象调用静态函数。比如harry是一个Employee对象，可以用harry.getNextId()代替Employee.getNextId()。但这种防疫容易混淆，因为getNextId方法计算的结果与harry无关，因此建议使用类名。
+
+在下面两种情况使用静态方法：①一个方法不需要访问对象状态，其所需参数都是通过显式参数提供（如Math.pow）。②一个方法只需要访问类的静态域（如：Employee.getNextId）。
+
+4.4、工厂方法：静态方法的一种常见用途。NumberFormat类使用工厂方法产生不同风格的格式对象。
+
+```java
+NumberFormat currency = NumberFormat.getCurrencyInstance();
+NumberFormat percentFormatter = NumberFormat.getPercentInstance();
+double x = 0.1;
+System.out.println(currencyFormatter.format(x)); // prints $0.10
+System.out.println(percentFormatter.format(x)); // prints 10%
+```
+
+为什么NumberFormat不利用构造器完成这些操作呢？原因：①无法命名构造器，狗仔起的名字必需与类名相同。②当使用构造器时，无法改变所构造的对象类型。
+
+4.5、main方法：不需要使用对象调用静态方法，例如main方法。面方法不对任何对象进行操作。在启动程序时还没有任何一个对象，静态的main方法将执行并创建程序所需要的对象。
+
+提示：每个类可以有一个main方法。通常应用于单元测试。
+
+5、方法参数：按值调用（call by value）、按引用调用（call by reference）一个方法可以修改传递引用所对应的变量值，但不能修改传递值调用所对应的变量值。Java程序设计语言总是按值调用，也就是说，方法得到的是所有参数值的一个拷贝，方法不能修改传递给它的任何参数变量的内容。
+
+但方法参数有两种类型：①基本数据类型（数字、布尔值）②对象引用
+
+由于Java是按值调用，参数为对象引用时是地址的一个拷贝。但不能交换两个对象的地址（值引用的原因）。
+
+* 一个方法不能修改一个进本数据类型的参数
+* 一个方法可以改变一个对象参数的状态
+* 一个方法不能让对象参数引用一个新的对象
+
+6、对象构造（非常重要）
+
+6.1重载
+
+注释：Java允许重载任何方法，而不只是构造器方法。因此要完整地描述一个方法，需要指出方法名以及参数类型。这叫做方法的签名（signature）。例如签名`indexOf(int)`。返回类型不是签名的一部分，也就是说不能有两个名字相同、参数一类型也相同而返回类型不同的方法。
+
+6.2、默认域初始化：如果在构造器中没有显式地给域赋予初值，那么就会被自动地赋为默认值：数值为0、布尔值为false、对象引用为null。然而，只有缺少程序设计经验的人才会这样做。如果不明确地对域进行初始化，就会影响程序代码的可读性。
+
