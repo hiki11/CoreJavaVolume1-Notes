@@ -510,7 +510,7 @@ JAR文件使用ZIP格式组织文件和子目录。可以使用所有ZIP实用�
 
 9、文档注释：
 
-注释以/**开始，\*/结束。每个/**...*/文档注释在标记之后紧跟着自由格式文本（free-form text）。标记由@开始，如@author或@param。
+注释以`/**`开始，`*/`结束。每个/**...*/文档注释在标记之后紧跟着自由格式文本（free-form text）。标记由@开始，如@author或@param。
 
 9.2、类注释：必需放在import语句之后，类定义之前。没有必要在每一行的开始用星号*，但大部分IDE都提供了这种功能。
 
@@ -519,4 +519,50 @@ JAR文件使用ZIP格式组织文件和子目录。可以使用所有ZIP实用�
 9.5、通用注释：@author 姓名，@version 文本，@since 文本，@deprecated 文本，@see 引用（可以指定超链接）
 
 9.6、包与概述注释
+
+10、类设计技巧：更具OOP水准。①保证数据私有（即封装性，如实例域的私有）②数据初始化③不要在类中食用过多的基本类型，例如可以用一个称为Address的新类替换以下实例域。
+
+```java
+private String street;
+private String city;
+private String state;
+private int zip;
+```
+
+④不是所有的域都需要独立的域访问器和域更改器⑤将职责过多的类进行分解⑥类名和方法名要能够体现它们的职责
+
+## 第5章 继承
+
+继承即复用类的方法和域，在此基础上还可以添加一些新的方法和域，满足新的需求。另外还会讲述反射（reflection）的概念。反射是指在程序运行期间发现更多的类及其属性的能力。
+
+5.1、 类、超类和子类
+
+例如新类Manager继承类Employee，并添加一些新功能。那么Manager与Employee存在“is-a”（是）关系，即每个经理都是雇员。`class Manager extends Employee{}`
+
+关键字extends表示继承。父类（parent class）也称为超类（superclass）或基类（base class）；子类（subclass）也称为派生类（derived class）或孩子类（child class）。
+
+Manager类中没有显示定义getName和getHireDay等方法，但仍可以使用，因为它自动集成了超类Employee的这些方法。同样也继承了域。
+
+在设计类的时候，应该将通用的方法放在超类，二将具有特殊用途的方法放在子类。
+
+然而超类的一些方法对子类不一定适用，为此要提供一个新的方法来覆盖（override）。
+
+```java
+public double getSalary() {
+  return salary + bonus;// won't work
+}
+```
+
+然而这个方法不能运行，因为Manager的getSalary方法不能直接访问超类的私有域。如果Manager类的方法一定要访问salary域，那么必需借助于公有的接口，也就是Employee类的公有方法getSalary。注意使用关键字super，否则getSalary是无限次地调用本身。
+
+```java
+public double getSalary() {
+  double baseSalary = super.getSalary();
+  return baseSalary + bonus;
+}
+```
+
+由于子类的构造器不能访问超类构造器，那么可以`super(n, s,...)`调用超类构造其，初始化这部分私有域。
+
+注释：this关键字两个用途：①引用隐式参数②调用该类其他构造器；super两个用途：①调用超类方法②调用超类构造器。调用构造器的语句只能作为另一个构造器的第一条语句出现。
 
