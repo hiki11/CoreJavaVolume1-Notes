@@ -566,3 +566,29 @@ public double getSalary() {
 
 注释：this关键字两个用途：①引用隐式参数②调用该类其他构造器；super两个用途：①调用超类方法②调用超类构造器。调用构造器的语句只能作为另一个构造器的第一条语句出现。
 
+```java
+Manager boss = new Manager("Carl Cracker", 80000, 1987, 12, 15);
+boss.setBonus(5000);
+
+Employee[] staff = new Employee[3];
+
+staff[0] = boss;
+staff[1] = new Employee("Harry Hacker", 50000, 1989, 10 ,1);
+staff[2] = new Employee("Tony Tester", 40000, 1990, 3 ,15);
+
+for (Employee e : staff) {
+  System.out.println(e.getName() + " " + e.getSalary());
+}
+```
+
+```
+结果是staff[0]，即boss调用了Manager的getSalary()。staff[1]调用了Employee的getSalary()。
+```
+
+一个对象变量可以只是多种实际类型的现象被称为多台（polymorphism）。在运行时能够自动地选择调用哪个方法的现象称为动态绑定（dynamic binding）。
+
+注释：在Java中，不需要将方法声明为虚拟方法，动态绑定是默认的处理方式。如果不希望让一个方法具有虚拟特征，可以标记为final。
+
+1.1、继承层次：即由一个公共超类派生出来的所有类的合集。在继承层次（inheritance hierarchy）中，从某个特定的类到期祖先的路径被称为继承链（inheritance chain）。通常一个祖先类可以拥有多个子孙继承链。
+
+注释：Java不支持多继承。
